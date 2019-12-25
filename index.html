@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="css/common.css"/>
-	<link rel="stylesheet" href="css/fiddle-app.css"/>
-	<meta charset="utf-8"/>
-	<script>
-		function adjustScreen() {
-			if (document.body.clientWidth > 600) {
-				document.body.className = "";
-			}
-			else {
-				document.body.className = "default-view"
-			}
-		}
-		function toggleViews() {
-			document.body.className = (document.body.className == "default-view" ? "sidebar-view" : "default-view")
-		}
-		window.onload = adjustScreen;
-		window.onresize = adjustScreen;
-	</script>
-	<script src="js/react.js"></script>
-	<script src="js/JSXTransformer.js"></script>
-	<script src="js/fiddle-app.js" type="text/jsx" async></script>
+  <link rel="stylesheet" href="css/common.css"/>
+  <link rel="stylesheet" href="css/fiddle-app.css"/>
+  <meta charset="utf-8"/>
+  <script>
+    function adjustScreen() {
+      if (document.body.clientWidth > 600) {
+        document.body.className = "";
+      }
+      else {
+        document.body.className = "default-view"
+      }
+    }
+    function toggleViews() {
+      document.body.className = (document.body.className == "default-view" ? "sidebar-view" : "default-view")
+    }
+    window.onload = adjustScreen;
+    window.onresize = adjustScreen;
+  </script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react-dom.js"></script>
+  <script src="js/fiddle-app.js" async></script>
 </head>
 <body>
-	<button id="responsive-sidebar-toggle" onclick="toggleViews()"><span>☰</span></button>
-	<div id="content"></div>
+  <button id="responsive-sidebar-toggle" onclick="toggleViews()"><span>☰</span></button>
+  <div id="content"></div>
 </body>
 </html>

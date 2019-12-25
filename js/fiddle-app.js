@@ -1,6 +1,8 @@
-var JSFiddleApp = React.createClass({
-  getInitialState: function() {
-    return {
+class JSFiddleApp extends React.Component {
+  constructor() {
+    super();
+    this.apiURL = "http://jsfiddle.net/api/user/%{user}/demo/list.json";
+    this.state = {
       data: [],
       currentFiddle: {
         name: "",
@@ -9,16 +11,9 @@ var JSFiddleApp = React.createClass({
         index: 0
       }
     };
-  },
-  render: function() {
-    return (<div className="fiddle-container container">
-              <FiddleList data={this.state.data} selectedIndex={this.state.currentFiddle.index} onItemSelected={this.onItemSelected}/>
-              <FiddleView name={this.state.currentFiddle.name} description={this.state.currentFiddle.description} url={this.state.currentFiddle.url}/>
-            </div>)
-  },
-  apiURL: "http://jsfiddle.net/api/user/%{user}/demo/list.json",
-  getJSON: function(callback, error) {
-	var url = this.apiURL;
+    this.onItemSelected = this.onItemSelected.bind(this);
+  }
+  getJSON(url, callback, error) {
     var callbackName = "jsonp_callback_" + Math.round(100000 * Math.random());
     window[callbackName] = function(data) {
       delete window[callbackName];
@@ -32,21 +27,38 @@ var JSFiddleApp = React.createClass({
 
     script.onerror = function() {
       error();
-    }
-  },
-  onItemSelected: function(args) {
-    if(args.index == this.state.currentFiddle.index) return;
+    };
+  }
+  render() {
+    return React.createElement("div", {
+      className: "fiddle-container container"
+    },
+      FiddleList({
+        data: this.state.data,
+        selectedIndex: this.state.currentFiddle.index,
+        onItemSelected: this.onItemSelected
+      }),
+      FiddleView({
+        name: this.state.currentFiddle.name,
+        description: this.state.currentFiddle.description,
+        url: this.state.currentFiddle.url
+      })
+    );
+  }
+  onItemSelected(args) {
+    if (args.index == this.state.currentFiddle.index) return;
     this.setState({currentFiddle: args});
-  },
-  componentDidMount: function() {
-	this.apiURL = this.apiURL.replace("%{user}", this.props.user);
-	if (this.props.start) {
-		this.apiURL += "?start=" + this.props.start;
-	}
-	if (this.props.limit) {
-		this.apiURL += "&limit=" + this.props.limit;
-	}
-    this.getJSON(function(response) {
+  }
+  componentDidMount() {
+    this.apiURL = this.apiURL.replace("%{user}", this.props.user);
+    this.apiURL += "?dummy=true";
+    if (this.props.start) {
+      this.apiURL += "&start=" + this.props.start;
+    }
+    if (this.props.limit) {
+      this.apiURL += "&limit=" + this.props.limit;
+    }
+    this.getJSON(this.apiURL, (response) => {
       this.setState({
         data: response.list,
         currentFiddle: {
@@ -56,64 +68,80 @@ var JSFiddleApp = React.createClass({
           index: 0
         }
       });
-    }.bind(this), function() {});
+    }, () => {});
   }
-});
-var ListItem = React.createClass({
-  getInitialState: function() {
-    return {
+}
+
+class ListItem extends React.Component {
+  constructor() {
+    super();
+    this.state = {
       selected: false
-    }
-  },
-  onClick: function() {
-    var node = this.getDOMNode();
+    };
+    this.onClick = this.onClick.bind(this);
+  }
+  onClick() {
+    var node = ReactDOM.findDOMNode(this);
     this.props.onItemSelected({
       name: this.props.name,
       description: this.props.fiddle.description,
       url: this.props.url,
       index: [].slice.call(node.parentNode.children).indexOf(node)
     });
-	if (document.body.clientWidth < 600) {
-	  toggleViews();
-	}
-  },
-  render: function() {
-    return (<li onClick={this.onClick} data-url={this.props.name} aria-selected={this.props.index == this.props.selectedIndex}>
-              <span className="name">{this.props.name}</span>
-              <span className="url">{"http:" + this.props.url}</span>
-            </li>);
-  },
-  componentDidMount: function() {
-    var node = this.getDOMNode();
+    if (document.body.clientWidth < 600) {
+      toggleViews();
+    }
+  }
+  render() {
+    return React.createElement("li", {
+      onClick: this.onClick,
+      "data-url": this.props.name,
+      "aria-selected": this.props.index == this.props.selectedIndex
+    },
+      React.createElement("span", {
+        className: "name"
+      }, this.props.name),
+      React.createElement("span", {
+        className: "url"
+      }, "http:" + this.props.url),
+    );
+  }
+  componentDidMount() {
+    var node = ReactDOM.findDOMNode(this);
     this.setState({selected: this.props.selectedIndex === [].slice.call(node.parentNode.children).indexOf(node)})
   }
-});
-var FiddleList = React.createClass({
-  render: function() {
-    var listNodes = this.props.data.map(function(value, index) {
-      return (<ListItem index={index} selectedIndex={this.props.selectedIndex} onItemSelected={this.props.onItemSelected} fiddle={value} url={value.url} name={value.title}/>)
-    }.bind(this));
-    return (<ul className="list sidebar">{listNodes}</ul>)
-  },
+};
 
-});
-
-var FiddleView = React.createClass({
-  render: function() {
-    this.state = {
-      name: "",
-      description: ""
-    }
-    return (<div className="fiddle-view content">
-      <h1>{this.props.name}</h1>
-      <p>{this.props.description}</p>
-      <iframe src={"http:" + this.props.url + "embedded/result/"}></iframe>
-  
-    </div>)
-  }
-});
-
-React.render(<JSFiddleApp user="ntim" start="0" limit="100"/>, $("#content"));
-function $(selector) {
-  return document.querySelector(selector);
+function FiddleList({ data, selectedIndex, onItemSelected }) {
+  var listNodes = data.map((value, index) => {
+    return React.createElement(ListItem, {
+      index,
+      selectedIndex,
+      onItemSelected,
+      fiddle: value,
+      url: value.url,
+      name: value.title,
+    });
+  });
+  return React.createElement("ul", {
+    className: "list sidebar"
+  }, listNodes);
 }
+
+function FiddleView({ name, description, url }) {
+  return React.createElement("div", {
+    className: "fiddle-view content",
+  },
+    React.createElement("h1", {}, name),
+    React.createElement("p", {}, description),
+    React.createElement("iframe", {
+      src: "http:" + url + "embedded/result/"
+    })
+  );
+}
+
+ReactDOM.render(React.createElement(JSFiddleApp, {
+  user: "ntim",
+  start: 0,
+  limit: 100,
+}), document.getElementById("content"));
