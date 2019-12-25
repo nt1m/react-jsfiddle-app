@@ -7,7 +7,7 @@ class JSFiddleApp extends React.Component {
       currentFiddle: {
         name: "",
         description: "",
-        url: "about:blank",
+        url: undefined,
         index: 0
       }
     };
@@ -130,13 +130,13 @@ function FiddleList({ data, selectedIndex, onItemSelected }) {
 
 function FiddleView({ name, description, url }) {
   return React.createElement("div", {
-    className: "fiddle-view content",
+    className: "fiddle-view content"
   },
     React.createElement("h1", {}, name),
     React.createElement("p", {}, description),
-    React.createElement("iframe", {
+    React.createElement("iframe", url ? {
       src: "http:" + url + "embedded/result/"
-    })
+    } : { src: "about:blank" })
   );
 }
 
