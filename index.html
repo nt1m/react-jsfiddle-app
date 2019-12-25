@@ -6,15 +6,12 @@
   <meta charset="utf-8"/>
   <script>
     function adjustScreen() {
-      if (document.body.clientWidth > 600) {
-        document.body.className = "";
-      }
-      else {
-        document.body.className = "default-view"
-      }
+      document.body.classList.toggle("default-view", document.body.clientWidth <= 600);
+      document.body.classList.toggle("dark-theme", location.hash == "#dark-theme");
     }
     function toggleViews() {
-      document.body.className = (document.body.className == "default-view" ? "sidebar-view" : "default-view")
+      document.body.classList.toggle("sidebar-view");
+      document.body.classList.toggle("default-view");
     }
     window.onload = adjustScreen;
     window.onresize = adjustScreen;
