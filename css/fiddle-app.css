@@ -37,9 +37,6 @@
 		left: auto;
 		box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.098);
 	}
-	.container {
-		max-width: none;
-	}
 	.content, .sidebar {
 		transition: max-width 0.3s;
 		margin: 0 !important;
