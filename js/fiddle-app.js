@@ -1,7 +1,7 @@
 class JSFiddleApp extends React.Component {
   constructor() {
     super();
-    this.apiURL = "http://jsfiddle.net/api/user/%{user}/demo/list.json";
+    this.apiURL = "https://jsfiddle.net/api/user/%{user}/demo/list.json";
     this.state = {
       data: [],
       currentFiddle: {
@@ -135,7 +135,7 @@ function FiddleView({ name, description, url }) {
     React.createElement("h1", {}, name),
     React.createElement("p", {}, description),
     React.createElement("iframe", url ? {
-      src: "http:" + url + "embedded/result/"
+      src: "https:" + url + "embedded/result/"
     } : { src: "about:blank" })
   );
 }
