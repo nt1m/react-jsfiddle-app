@@ -13,8 +13,8 @@
       document.body.classList.toggle("sidebar-view");
       document.body.classList.toggle("default-view");
     }
-    window.onload = adjustScreen;
-    window.onresize = adjustScreen;
+    window.addEventListener("DOMContentLoaded", adjustScreen);
+    window.addEventListener("resize", adjustScreen);
   </script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react.js"></script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react-dom.js"></script>
