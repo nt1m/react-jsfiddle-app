@@ -7,8 +7,11 @@ body {
   font: normal normal 400 1em/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
 }
 h1 {
-  font-size: 1.5em;
-  margin: 0;
+  font-size: 1.2em;
+  margin: 0.3em 0.3em 0;
+}
+p {
+  margin: 0.3em;
 }
 .container {
   height: 100vh;
@@ -25,7 +28,6 @@ h1 {
   padding: 0;
 }
 .list li {
-  border-bottom: 1px solid #ddd;
   padding: 5px;
   line-height: 30px;
   transition: all 0.1s;
@@ -56,7 +58,6 @@ h1 {
   display: flex;
   -webkit-flex-direction: column;
   flex-direction: column;
-  margin-left: 50px;
 }
 .content iframe {
   border: none;

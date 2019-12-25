@@ -7,16 +7,16 @@
 	#responsive-sidebar-toggle {
 		font-size: 24px;
 		position: absolute;
-		top: 20px;
-		left: 3px;
+		top: 0.3em;
+		left: 0.3em;
 		width: 32px;
 		height: 32px;
 		z-index: 999;
 		transition: all 0.3s ease 0s;
 		border-radius: 2px;
 		background: none;
-		border: 1px solid #000;
-		color: #000;
+		border: 1px solid currentColor;
+		color: inherit;
 		padding: 5px;
 		text-align: center;
 	}
@@ -39,7 +39,6 @@
 	}
 	.content, .sidebar {
 		transition: max-width 0.3s;
-		margin: 0 !important;
 	}
 	.sidebar-view .content,
 	.default-view .sidebar {
@@ -52,7 +51,6 @@
 		max-width: 100%;
 	}
 	.content h1 {
-		padding-top: 1em;
 		white-space: nowrap;
 		font-size: 1.2em
 	}
