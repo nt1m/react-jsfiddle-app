@@ -58,13 +58,14 @@ class JSFiddleApp extends React.Component {
     if (this.props.limit) {
       this.apiURL += "&limit=" + this.props.limit;
     }
-    this.getJSON(this.apiURL, (response) => {
+    this.getJSON(this.apiURL, ({ list }) => {
+      list = list.filter(i => i.title);
       this.setState({
-        data: response.list,
+        data: list,
         currentFiddle: {
-          name: response.list[0].title,
-          description: response.list[0].description,
-          url: response.list[0].url,
+          name: list[0].title,
+          description: list[0].description,
+          url: list[0].url,
           index: 0
         }
       });
